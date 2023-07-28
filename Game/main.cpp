@@ -16,9 +16,11 @@ int main(){
 	//Variables
 
 	int velocityPad1 = 0;
-	int miniballXVelocity = -3;
-	int miniballYVelocity = -3;
-	int velocityPad2 = 0;
+	int miniballXVelocity = -4;
+	int miniballYVelocity = -4;
+	int velocityPad2 = 3;
+	int pad1Score = 0;
+	int pad2Score = 0;
 	//========LoadFiles====
 	sf::Texture pad;
 	if (pad.loadFromFile("MyFile/bar.png") == false) return -1;
@@ -56,6 +58,25 @@ int main(){
 	miniball.setSize(sf::Vector2f(50, 50));
 	miniball.setPosition(400, 500);
 	miniball.setTexture(&ball);
+	//Font
+	sf::Font font;
+	if (font.loadFromFile("MyFile/ARIAL.ttf") == 0) {
+		return 1;
+	}
+	sf::Text text("0 : 0", font);
+	text.setPosition(400, 10);
+	text.setCharacterSize(30);
+	text.setStyle(sf::Text::Bold);
+	text.setFillColor(sf::Color::White);
+
+	//Sound
+	sf::SoundBuffer Sbuffer;
+	if (Sbuffer.loadFromFile("MyFile/bmusic.wav") == 0) {
+		return 1;
+	}
+	sf::Sound Sound1;
+	Sound1.setBuffer(Sbuffer);
+	Sound1.play();
 	
 	while (play == true)
 	{
@@ -123,6 +144,15 @@ int main(){
 		if (miniball.getGlobalBounds().intersects(shape2.getGlobalBounds()) == true)
 			miniballXVelocity = -miniballXVelocity;
 		std::cout << miniball.getPosition().x<<"\t"<<miniball.getPosition().y<<"\n";
+		//Game over condition
+		if (pad1Score >= 5) {
+			std::cout << "Left side is won!";
+			play = false;
+		}
+		else if (pad2Score >= 5) {
+			std::cout << "Right side is won!";
+			play = false;
+		}
 		//Rendering part
 		window.clear();
 		//Drawing
@@ -130,6 +160,10 @@ int main(){
 		window.draw(shape1);
 		window.draw(shape2);
 		window.draw(miniball);
+		std::stringstream ss;
+		ss << pad1Score << " : " << pad2Score;
+		text.setString(ss.str());
+		window.draw(text);
 		window.display();
 	}
 	
