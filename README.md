@@ -1,1 +1,1 @@
-# 1-2 Semester Game Project 🍼🍼
+# 1-2 Semester Pong Game Using C++ 🍼🍼
